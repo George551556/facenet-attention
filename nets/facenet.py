@@ -85,10 +85,16 @@ class Facenet(nn.Module):
                 x = self.x_attention(x)
             #attention 模块----------------------------
             x = self.avg(x)
+            if self.phi>1 and self.phi<3:
+                x = self.x_attention(x)
             x = x.view(x.size(0), -1)
             x = self.Dropout(x)
             x = self.Bottleneck(x)
+            if self.phi>1 and self.phi<3:
+                x = self.x_attention(x)
             x = self.last_bn(x)
+            if self.phi>1 and self.phi<3:
+                x = self.x_attention(x)
             x = F.normalize(x, p=2, dim=1)
             return x
         x = self.backbone(x)
@@ -97,9 +103,15 @@ class Facenet(nn.Module):
             x = self.x_attention(x)
         #attention 模块----------------------------
         x = self.avg(x)
+        if self.phi>1 and self.phi<3:
+            x = self.x_attention(x)
         x = x.view(x.size(0), -1)
         x = self.Dropout(x)
+        if self.phi>1 and self.phi<3:
+            x = self.x_attention(x)
         x = self.Bottleneck(x)# 全连接，输出长度为128
+        if self.phi>1 and self.phi<3:
+            x = self.x_attention(x)
         before_normalize = self.last_bn(x)
         
         # 这个L2标准化是为了使得不同人脸的特征向量可以属于同一数量级，方便比较
