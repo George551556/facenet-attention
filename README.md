@@ -1,2 +1,2 @@
 # facenet-attention
-### This is a useless repoisity
+### This is a useless repository
