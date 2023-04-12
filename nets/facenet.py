@@ -82,25 +82,33 @@ class Facenet(nn.Module):
             x = self.backbone(x)
             #attention 模块----------------------------
             if self.phi>1 and self.phi<3:
+                x_copy_2 = x
                 x = self.x_attention(x)
+                x = x+x_copy_2
             #attention 模块----------------------------
             x = self.avg(x)
             if self.phi>1 and self.phi<3:
-                x = self.x_attention(x)
+                x_copy_3 = x
+                x = self.x_attention(x)#attattattatt
+                x = x+x_copy_3
             x = x.view(x.size(0), -1)
             x = self.Dropout(x)
-            x = self.Bottleneck(x)
-            x = self.last_bn(x)
+            x = self.Bottleneck(x)# 全连接，输出长度为128
+            x = self.last_bn(x)# batch_normal
             x = F.normalize(x, p=2, dim=1)
             return x
         x = self.backbone(x)
         #attention 模块----------------------------
         if self.phi>1 and self.phi<3:
+            x_copy = x
             x = self.x_attention(x)
+            x = x+x_copy
         #attention 模块----------------------------
         x = self.avg(x)
         if self.phi>1 and self.phi<3:
-            x = self.x_attention(x)
+            x_copy_1 = x
+            x = self.x_attention(x)#attattattatt
+            x = x+x_copy_1
         x = x.view(x.size(0), -1)
         x = self.Dropout(x)
         x = self.Bottleneck(x)# 全连接，输出长度为128
